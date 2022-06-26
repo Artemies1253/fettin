@@ -44,4 +44,3 @@ class ListLotView(views.generic.ListView):
     queryset = Lot.objects.filter(open=True)
     context_object_name = "lot_list"
     template_name = "exchange/lot_list.html"
-
