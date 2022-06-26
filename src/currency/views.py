@@ -13,4 +13,5 @@ class CreateCurrencyView(generic.CreateView):
 
 class ListCurrencyView(generic.ListView):
     queryset = Currency.objects.all()
+    template_name = "currency/currency_list.html"
     context_object_name = "currency_list"

@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+{% block title %}Домашняя страница{% endblock title %}
+{% block content %}
+    {% if lot_list %}
+        <h2>Активные лоты</h2>
+        {% for lot in lot_list %}
+            <div>Пользователь:{{ lot.user.email }} Вид продаваемой валюты:{{ lot.currency }} Количество продаваемой валюты:{{ lot.selled_value }} Цена лота:{{ lot.price }} Вид запрашиваемой валюты:{{ lot.price_currency }} Дата создания:{{ lot.created_at }}
+            <form action="{% url 'create_exchange'  lot.id  %}" method="post">{% csrf_token %}<button type="submit">Купить</button></form>
+            </div>
+        {% endfor %}
+
+    {% endif %}
+{% endblock content %}

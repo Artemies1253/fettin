@@ -33,14 +33,15 @@ def make_addition(
     if queryset_currency_buyer.exists():
         currency_buyer = queryset_currency_buyer.first()
         currency_buyer.count += value_seller
-        currency_buyer.first().save()
+        currency_buyer.save()
     else:
         CurrencyUser.objects.create(user=buyer, currency=kind_currency_seller, count=value_seller)
 
     currency_seller = CurrencyUser.objects.filter(user=seller, currency=kind_currency_buyer)
 
     if currency_seller.exists():
-        currency_seller.first().count += value_buyer
+        currency_seller = currency_seller.first()
+        currency_seller.count += value_buyer
         currency_seller.save()
     else:
         CurrencyUser.objects.create(user=seller, currency=kind_currency_buyer, count=value_buyer)
@@ -52,21 +53,17 @@ def change_currency_value(
         kind_currency_buyer: Currency, kind_currency_seller: Currency
 ) -> bool:
     """Изменяет валютный баланс пользователей"""
-    buyer_currency = CurrencyUser(user=buyer, currency=kind_currency_buyer)
-    seller_currency = CurrencyUser(user=seller, currency=kind_currency_seller)
-    if value_buyer <= buyer_currency.count and value_seller <= seller_currency.count:
-        do_subtraction(
-            buyer_currency=buyer_currency, seller_currency=seller_currency,
-            value_buyer=value_buyer, value_seller=value_seller
-        )
-        make_addition(
-            buyer=buyer, seller=seller,
-            value_buyer=value_buyer, value_seller=value_seller,
-            kind_currency_buyer=kind_currency_buyer, kind_currency_seller=kind_currency_seller
-        )
-        return True
-    else:
-        return False
+    buyer_currency = CurrencyUser.objects.get(user=buyer, currency=kind_currency_buyer)
+    seller_currency = CurrencyUser.objects.get(user=seller, currency=kind_currency_seller)
+    do_subtraction(
+        buyer_currency=buyer_currency, seller_currency=seller_currency,
+        value_buyer=value_buyer, value_seller=value_seller
+    )
+    make_addition(
+        buyer=buyer, seller=seller,
+        value_buyer=value_buyer, value_seller=value_seller,
+        kind_currency_buyer=kind_currency_buyer, kind_currency_seller=kind_currency_seller
+    )
 
 
 def create_exchange_transaction(

@@ -1,5 +1,7 @@
 {% extends 'main/base.html' %}
 {% block title %}Домашняя страница{% endblock title %}
 {% block content %}
-    <a href="{% url 'user_info' %}"> ssss</a>
+    <p><a href="{% url 'create_currency' %}">Создать новую валюту</a></p>
+    <p><a href="{% url 'create_lot' %}">Создать лот</a></p>
+    <p><a href="{% url 'lot_list' %}">Список открытых лотов</a> </p>
 {% endblock content %}

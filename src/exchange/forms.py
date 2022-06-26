@@ -8,8 +8,4 @@ class CreateLotForm(forms.ModelForm):
 
     class Meta:
         model = Lot
-        fields = ("currency", "value")
-
-    def clean(self):
-        cleaned_data = super().clean()
-        print(cleaned_data)
+        fields = ("currency", "selled_value", "price", "price_currency")
