@@ -1,0 +1,16 @@
+{% extends "users/base.html" %}
+{% block title %}Личный кабинет{% endblock title %}
+{% block content %}
+    <h1>Личный кабинет</h1>
+    <p>Почта {{ request.user.email }}</p>
+    <p>Имя  {{ request.user.first_name }}</p>
+    <p>Фамилия {{ request.user.last_name }}</p>
+    {% if request.user.currencies.all %}
+        <h2>Валюты</h2>
+        {% for currency_info in request.user.currencies.all %}
+            <p>{{ currency_info.currency.name }} {{ currency_info.count }}</p>
+        {% endfor %}
+    {% else %}
+        <h2>Баланс пуст</h2>
+    {% endif %}
+{% endblock content %}

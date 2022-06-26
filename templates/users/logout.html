@@ -1,0 +1,7 @@
+{% extends "users/base.html" %}
+{% block title %}Выход из аккаунта{% endblock title %}
+{% block content %}
+    <h2>Logout</h2>
+    <p>Вы вышли из своей учётной записи</p>
+    <a href="{% url "home" %}">Перейти на главную страницу</a>
+{% endblock content %}
