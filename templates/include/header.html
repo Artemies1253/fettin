@@ -1,10 +1,12 @@
 {% if request.user.is_authenticated%}
     <div><a href="{% url 'user_info' %}">Личный кабинет</a>
         <a href="{% url 'create_replenishment' %}">Пополнить баланс</a>
+        <a href="{% url 'home' %}">Домашняя страница</a>
         <a href="{% url 'logout' %}">Выйти</a></div>
 {% else %}
     <div>
     <a href="{% url 'login' %}">Войти</a>
     <a href="{% url 'registration' %}">Зарегистрироваться</a>
+    <a href="{% url 'home' %}">Домашняя страница</a>
     </div>
 {% endif %}

@@ -1,7 +1,8 @@
 from django import views
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.forms import Form
+from django.template.response import TemplateResponse
 
 from src.currency.models import CurrencyUser
 from src.exchange.models import Lot
@@ -29,7 +30,7 @@ class CreateTransactionReplenishmentView(views.View):
 
 class TransactionExchangeView(views.View):
     def post(self, request, lot_id):
-        print()
+        return TemplateResponse(request, "transaction/poor_buyer.html", {})
 
         lot = Lot.objects.get(id=lot_id)
         seller = lot.user
@@ -42,11 +43,12 @@ class TransactionExchangeView(views.View):
         buyer_currency = CurrencyUser.objects.get(user=buyer, currency=kind_currency_buyer)
         seller_currency = CurrencyUser.objects.get(user=seller, currency=kind_currency_seller)
         if value_buyer <= buyer_currency.count:
-            print("Не достаточно денег у покупателя")
-            pass
+            print("Недостаточно денег у покупателя")
+            return TemplateResponse(request, "transaction/poor_buyer.html", {})
         elif value_seller <= seller_currency.count:
-            print("Не доастаточно денег у продавца")
-            pass
+            lot.open = False
+            lot.save()
+            return TemplateResponse(request, "transaction/poor_buyer.html", {})
 
         transaction = create_exchange_transaction(
             buyer=buyer, seller=seller,
